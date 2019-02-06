@@ -7,8 +7,8 @@
             string="Stock Inventory by Location"
             menu="False"
             report_type="qweb-pdf"
-            name="inventoryrep_stock_report_10.report_stock_inventory_location"
-            file="inventoryrep_stock_report_10.report_stock_inventory_location" 
+            name="inventory_stock_report.report_stock_inventory_location"
+            file="inventory_stock_report.report_stock_inventory_location" 
         />        
     </data>
 </odoo>

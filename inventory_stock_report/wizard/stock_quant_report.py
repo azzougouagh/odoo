@@ -83,7 +83,7 @@ class WizardValuationStockInventory(models.TransientModel):
                 'lang': 'en_US', 
                 'active_ids': [self.id],
             }
-            return self.env.ref('inventoryrep_stock_report_10.action_stock_inventory_location').report_action(self)
+            return self.env.ref('inventory_stock_report.action_stock_inventory_location').report_action(self)
             # return {
             #     'context': context,
             #     'data': None,

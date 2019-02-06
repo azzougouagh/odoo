@@ -8,8 +8,23 @@
                     <div class="oe_structure"/>
                         <h2>Valorisation du stock</h2>
                         <div class="row mt32 mb32">
-                            <div class="col-xs-12">
-                                <span>Emplacement : </span><sapn t-field="o.location_id"/>
+                            <div class="col-xs-3">
+                                <span>Emplacement : </span>
+                                <p>
+                                <sapn t-field="o.location_id"/>
+                                </p>
+                            </div>
+                            <div class="col-xs-3">
+                                <span>Imprimé le : </span>
+                                <p>
+                                <sapn t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                            </p>
+                            </div>
+                            <div class="col-xs-3">
+                                <span>Par : </span>
+                                <p>
+                                <sapn t-esc="user.name"/>
+                            </p>
                             </div>
                         </div>
                         <table class="table table-condensed">
