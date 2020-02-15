@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_mrp_report_product_pivot" model="ir.ui.view">
+         <field name="name">mrp.report.pivot</field>
+         <field name="model">mrp.report</field>
+         <field name="arch" type="xml">
+             <pivot string="MRP Analysis" disable_linking="True">
+                 <field name="product_consumed_id" type="col"/>
+                 <field name="date" interval="month" type="row"/>
+                 <field name="qty_consumed" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+    <record id="view_mrp_production_graph" model="ir.ui.view">
+         <field name="name">mrp.reportgraph</field>
+         <field name="model">mrp.report</field>
+         <field name="arch" type="xml">
+             <graph string="MRP Analysis">
+                 <field name="date" type="row"/>
+                 <field name="qty_consumed" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <record id="view_mrp_production_search" model="ir.ui.view">
+        <field name="name">mrp.report.search</field>
+        <field name="model">mrp.report</field>
+        <field name="arch" type="xml">
+            <search string="MRP Analysis">
+                <field name="date"/>
+                <filter string="This Year" name="year" invisible="1" domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state','=', 'confirmed')]"/>
+                <filter name="planned" string="Planned" domain="[('state','=', 'planned')]"/>
+                <filter name="inprogress" string="In Progress" domain="[('state','=', 'progress')]"/>
+                <filter name="Done" string="Done" domain="[('state','=','done')]"/>
+                <separator/>
+                <field name="product_consumed_id"/>
+                <field name="user_id"/>
+                <group expand="0" string="Extended Filters">
+                    <field name="categ_id" filter_domain="[('categ_id', 'child_of', self)]"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <group expand="1" string="Group By">
+                    <filter string="Responsible" name="User" context="{'group_by':'user_id'}"/>
+                    <filter string="Product" name="ConsumedProduct" context="{'group_by':'product_consumed_id'}"/>
+                    <filter string="Product Category" name="Category" context="{'group_by':'categ_id'}"/>
+                    <filter name="status" string="Status" context="{'group_by':'state'}"/>
+                    <filter string="Company" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
+                    <separator/>
+                    <filter string="Production Month" context="{'group_by':'date:month'}" help="Ordered date of the mrp production"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_mrp_production_report" model="ir.actions.act_window">
+        <field name="name">Mrp Production Analysis</field>
+        <field name="res_model">mrp.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="view_id"></field> 
+        <field name="search_view_id" ref="view_mrp_production_search"/>
+        <field name="context">{'search_default_Done':1, 'search_default_ConsumedProduct':1,'group_by_no_leaf':1,'group_by':[]}</field>
+        <field name="help">This report performs analysis on your Mrp production Produced and consumed product.</field>
+    </record>
+
+        <menuitem id="menu_mrp_production_report"
+            name="Mrp analysis"
+            parent="mrp.menu_mrp_root"
+            sequence="22"
+            action="action_mrp_production_report"
+            groups="mrp.group_mrp_manager"/>
+</odoo>
