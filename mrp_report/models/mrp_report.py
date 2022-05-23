@@ -28,6 +28,9 @@ class MrpReport(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancelled')], string='State',
         copy=False, default='confirmed', track_visibility='onchange')
+
+    def hada_test(self):
+        print('this is my branch')
     # def _select(self):
     #     select_str = """
     #          SELECT min(l.id) as id,
